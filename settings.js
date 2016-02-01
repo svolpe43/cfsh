@@ -32,6 +32,6 @@ exports.module = {
 		"AWS::RDS::DBSubnetGroup" : "DBSubnetGroup"
 	},
 
-	key_path : "/Users/shawn.volpe/.ssh/search-rage.pem",
+	key_path : "~/.ssh/search-rage.pem",
 	ssh_user : "ubuntu"
 }
