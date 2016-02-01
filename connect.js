@@ -1,62 +1,36 @@
 
 /*
 	connect.js - a interactive tool to explore cloud formation and connect to instances
-	commands
-		- stacks - lists stacks in current AWS account
-		- ssh - open an ssh shell with the selected instance
-		- quit - close the script
-		- select a item by typing the index followed by enter
 */
 
 // libraries
 var exec = require('child_process').exec;
 var AWS = require('aws-sdk');
 
+// custom modules
+var settings = require('./settings').module;
+var res = require('./resources').module;
+
 // aws objects
-var aws_cf = new AWS.CloudFormation({region: "us-east-1"});
-var aws_ec2 = new AWS.EC2({region: "us-east-1"});
-var aws_elb = new AWS.ELB({region: "us-east-1"});
+var aws_params = { region: "us-east-1" };
+var aws_cf = new AWS.CloudFormation(aws_params);
+var aws_ec2 = new AWS.EC2(aws_params);
+var aws_elb = new AWS.ELB(aws_params);
+var aws_asg = new AWS.AutoScaling(aws_params);
 
-//enums
-const STACKS = "STACKS";
-const RES = "RES";
-const INSTANCES = "INSTANCES";
-const lookup = {
-	"AWS::AutoScaling::AutoScalingGroup" : "AutoScalingGroup",
-	"AWS::Route53::HostedZone" : "HostedZone",
-	"AWS::EC2::Instance" : "EC2Instance",
-	"AWS::IAM::InstanceProfile" : "InstanceProfile",
-	"AWS::AutoScaling::LaunchConfiguration" : "LaunchConfig",
-	"AWS::ElasticLoadBalancing::LoadBalancer" : "LoadBalancer",
-	"AWS::Route53::RecordSetGroup" : "RecordSetGroup",
-	"AWS::Route53::RecordSet" : "RecordSet",
-	"AWS::IAM::Role" : "Role",
-	"AWS::EC2::Route" : "Route",
-	"AWS::EC2::RouteTable" : "RouteTable",
-	"AWS::EC2::SecurityGroup" : "SecurityGroup",
-	"AWS::EC2::SubnetRouteTableAssociation" : "SubnetTableAssoc",
-	"AWS::EC2::Subnet" : "Subnet",
-	"AWS::RDS::DBSubnetGrou" : "DBSubnet",
-	"AWS::SNS::Topic" : "SNSTopic",
-	"AWS::EC2::VPC" : "VPC",
-	"AWS::EC2::VPCGatewayAttachment" : "VPCGateAttach",
-	"AWS::CloudWatch::Alarm" : "CWAlarm",
-	"AWS::Route53::HealthCheck" : "53HealthCheck",
-	"AWS::EC2::InternetGateway" : "INetGateway",
-	"AWS::RDS::DBInstance" : "DBInstance",
-	"AWS::SQS::Queue" : "SQSQueue",
-	"AWS::RDS::DBSubnetGroup" : "DBSubnetGroup"
-};
-
-// settings
-const key_path = "/Users/shawn.volpe/.ssh/search-rage.pem";
-const ssh_user = "ubuntu";
+// enums
+STACKS = "STACKS";
+RES = "RES";
+INSTANCES = "INSTANCES";
 
 // initialization
 var status = STACKS; 
 var stacks = [];
 var resources = [];
 var ip = -1;
+var lookup = settings.lookup;
+var key_path = settings.key_path;
+var ssh_user = settings.ssh_user;
 
 // gooo!
 start();
@@ -132,14 +106,55 @@ function list_resources(stackName){
 
 // selects a resource so that it can give more details and options
 function select_resource(type, res_id){
-	if(type == "AWS::ElasticLoadBalancing::LoadBalancer"){
-		select_elb(res_id);
-	}else if(type == "AWS::EC2::Instance"){
-		select_ec2_instance(res_id);
+	switch(type){
+		case "AWS::ElasticLoadBalancing::LoadBalancer": elb(res_id); break;
+		case "AWS::EC2::Instance": ec2_instance(res_id); break;
+		case "AWS::AutoScaling::AutoScalingGroup": asg(res_id); break;
+		default: console.error("Sorry can't support that type yet: " + type);
 	}
 }
 
-function select_elb(res_id){
+// initiate a ssh connection with the instance in a different tab, then exit
+function ssh(ip){0
+	var command = "osascript -e 'tell application \"Terminal\" to activate' -e 'tell application \"System Events\" to tell process \"Terminal\" to keystroke \"t\" using command down' -e 'tell application \"Terminal\" to do script ";
+	command += "\"ssh -o StrictHostKeyChecking=no -i " + key_path + " " + ssh_user + "@" + ip;
+	command += "\"";
+	command += " in selected tab of the front window'";
+
+	// execute ssh
+	var ssh = exec(command, function(){});
+}
+
+// ensure to write the correct amount of spaces after the resource name
+function name_padding(string){
+	if(string === undefined){
+		string = "";
+	}
+
+	var total = 16;
+	var spaces = total - string.length;
+	for(var i = 0; i < spaces; i++)
+		string += " ";
+	return string;
+}
+
+// ensure to write the correct amount of spaces after the index number
+function num_padding(num){
+	var padding = 1;
+	padding = (num < 10) ? padding + 1 : padding;
+	var out = "";
+	for(var i = 0; i < padding; i++)
+		out += " ";
+	return out + " |  ";
+}
+
+/*
+
+Resource handlers
+
+*/
+
+function elb(res_id){
 
 	aws_elb.describeLoadBalancers({ LoadBalancerNames : [res_id] }, function(err, data){
 		if (err) console.log(err, err.stack);
@@ -167,50 +182,32 @@ function select_elb(res_id){
 	});
 }
 
-function select_ec2_instance(res_id){
+function ec2_instance(res_id){
 	aws_ec2.describeInstances({ InstanceIds: [res_id] }, function(err, data) {
 		if (err) console.log(err, err.stack);
 		else{
 			var instance = data.Reservations[0].Instances[0];
 			ip = instance.PublicIpAddress;
-			console.log("\nInstance")
-			console.log(instance.InstanceId + " |  " + instance.PublicIpAddress);
+			console.log("\nInstancesadfas")
+			console.log(instance.InstanceId + " |  " + ip);
 		}
 	});
 }
 
-// initiate a ssh connection with the instance in a different tab, then exit
-function ssh(ip){
-	var command = "osascript -e 'tell application \"Terminal\" to activate' -e 'tell application \"System Events\" to tell process \"Terminal\" to keystroke \"t\" using command down' -e 'tell application \"Terminal\" to do script ";
-	command += "\"ssh -i " + key_path + " " + ssh_user + "@" + ip;
-	command += "\"";
-	command += " in selected tab of the front window'";
-
-	// actually lets try not exitting
-	var ssh = exec(command, function(){
-		//process.exit();
+function asg(res_id){
+	aws_asg.describeAutoScalingGroups({AutoScalingGroupNames: [res_id]}, function(err, data) {
+		if (err) console.log(err, err.stack);
+		else{
+			var instances = data.AutoScalingGroups[0].Instances;
+			console.log("\nInstance")
+			var index = 0;
+			status = INSTANCES;
+			resources = instances;
+			instances.forEach(function(instance){
+				ip = instance.PublicIpAddress;
+				console.log(index + num_padding(index) + instance.InstanceId + " |  " + instance.HealthStatus);
+				index++;
+			});
+		}
 	});
-}
-
-// ensure to write the correct amount of spaces after the resource name
-function name_padding(string){
-	if(string === undefined){
-		string = "";
-	}
-
-	var total = 16;
-	var spaces = total - string.length;
-	for(var i = 0; i < spaces; i++)
-		string += " ";
-	return string;
-}
-
-// ensure to write the correct amount of spaces after the index number
-function num_padding(num){
-	var padding = 1;
-	padding = (num < 10) ? padding + 1 : padding;
-	var out = "";
-	for(var i = 0; i < padding; i++)
-		out += " ";
-	return out + " |  ";
 }
