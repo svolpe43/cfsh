@@ -9,7 +9,6 @@ var AWS = require('aws-sdk');
 
 // custom modules
 var settings = require('./settings').module;
-var res = require('./resources').module;
 
 // aws objects
 var aws_params = { region: "us-east-1" };
