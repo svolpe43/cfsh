@@ -1,37 +1,62 @@
 
 /*
-	settings.js -  a list of settings for cloudNG
+	settings.js -  a list of settings for cloud
 */
 
-exports.module = {
+module.exports = {
+
+	path_color : "\u001b[34m",
+	end_marker_color : "\u001b[36m",
 
 	lookup : {
-		"AWS::AutoScaling::AutoScalingGroup" : "AutoScalingGroup",
+		"AWS::AutoScaling::AutoScalingGroup" : "Asg",
 		"AWS::Route53::HostedZone" : "HostedZone",
-		"AWS::EC2::Instance" : "EC2Instance",
+		"AWS::EC2::Instance" : "Instance",
 		"AWS::IAM::InstanceProfile" : "InstanceProfile",
 		"AWS::AutoScaling::LaunchConfiguration" : "LaunchConfig",
-		"AWS::ElasticLoadBalancing::LoadBalancer" : "LoadBalancer",
+		"AWS::ElasticLoadBalancing::LoadBalancer" : "Elb",
 		"AWS::Route53::RecordSetGroup" : "RecordSetGroup",
 		"AWS::Route53::RecordSet" : "RecordSet",
 		"AWS::IAM::Role" : "Role",
 		"AWS::EC2::Route" : "Route",
 		"AWS::EC2::RouteTable" : "RouteTable",
 		"AWS::EC2::SecurityGroup" : "SecurityGroup",
-		"AWS::EC2::SubnetRouteTableAssociation" : "SubnetTableAssoc",
+		"AWS::EC2::SubnetRouteTableAssociation" : "SubnetRouteTableAssoc",
 		"AWS::EC2::Subnet" : "Subnet",
-		"AWS::RDS::DBSubnetGrou" : "DBSubnet",
-		"AWS::SNS::Topic" : "SNSTopic",
+		"AWS::RDS::DBSubnetGroup" : "DBSubnet",
+		"AWS::SNS::Topic" : "Topic",
 		"AWS::EC2::VPC" : "VPC",
-		"AWS::EC2::VPCGatewayAttachment" : "VPCGateAttach",
-		"AWS::CloudWatch::Alarm" : "CWAlarm",
-		"AWS::Route53::HealthCheck" : "53HealthCheck",
-		"AWS::EC2::InternetGateway" : "INetGateway",
+		"AWS::EC2::VPCGatewayAttachment" : "VPCGatewayAttach",
+		"AWS::CloudWatch::Alarm" : "Alarm",
+		"AWS::Route53::HealthCheck" : "HealthCheck",
+		"AWS::EC2::InternetGateway" : "InternetGateway",
 		"AWS::RDS::DBInstance" : "DBInstance",
-		"AWS::SQS::Queue" : "SQSQueue",
+		"AWS::SQS::Queue" : "Queue",
 		"AWS::RDS::DBSubnetGroup" : "DBSubnetGroup"
 	},
 
+	stack_filter: [
+		'CREATE_COMPLETE',
+		'UPDATE_COMPLETE',
+		'CREATE_IN_PROGRESS',
+		'CREATE_FAILED',
+		'CREATE_COMPLETE',
+		'ROLLBACK_IN_PROGRESS',
+		'ROLLBACK_FAILED',
+		'ROLLBACK_COMPLETE',
+		'DELETE_IN_PROGRESS',
+		'DELETE_FAILED',
+		'UPDATE_IN_PROGRESS',
+		'UPDATE_COMPLETE_CLEANUP_IN_PROGRESS',
+		'UPDATE_COMPLETE',
+		'UPDATE_ROLLBACK_IN_PROGRESS',
+		'UPDATE_ROLLBACK_FAILED',
+		'UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS',
+		'UPDATE_ROLLBACK_COMPLETE'
+	],
+
 	key_path : "~/.ssh/search-rage.pem",
-	ssh_user : "ubuntu"
+	ssh_user : "ubuntu",
+	region : 'us-east-1'
+
 }
