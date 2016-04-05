@@ -5,6 +5,9 @@
 
 module.exports = {
 
+	path_color : "\u001b[34m",
+	end_marker_color : "\u001b[36m",
+
 	lookup : {
 		"AWS::AutoScaling::AutoScalingGroup" : "Asg",
 		"AWS::Route53::HostedZone" : "HostedZone",
@@ -55,4 +58,5 @@ module.exports = {
 	key_path : "~/.ssh/search-rage.pem",
 	ssh_user : "ubuntu",
 	region : 'us-east-1'
+
 }

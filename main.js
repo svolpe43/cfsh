@@ -4,6 +4,7 @@
 */
 
 var aws_tree = require('./tree');
+var settings = require('./settings');
 
 var csh = new Csh();
 
@@ -53,6 +54,14 @@ Csh.prototype.ls = function(command){
 	});
 }
 
+Csh.prototype.ssh = function(command){
+
+	var self = this;
+	this.tree.ssh({}, function(){
+		write_path(self.tree.current_path());
+	});
+}
+
 Csh.prototype.exit = function(){
 	console.log("Good bye");
 	process.exit();
@@ -66,6 +75,7 @@ Csh.prototype.huh = function(){
 // finish processing the command and output the results
 function write_path(path){
 	
-	process.stdout.write(path + "#:");
+	process.stdout.write(
+		settings.path_color + path + settings.end_marker_color + "#:" + "\u001b[0m");
 }
 

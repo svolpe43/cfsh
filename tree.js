@@ -31,17 +31,13 @@ Tree.prototype.cd = function(path, callback){
 
 	get_node(path, function(node){
 		
-		if(!node){
-
-			console.log('Path not found.');
-			callback();
-		}else{
+		if(node){
 
 			current = node;
 			current_path = create_path(current);
-
-			callback();
 		}
+
+		callback();
 	});
 }
 
@@ -61,7 +57,7 @@ Tree.prototype.ls = function(path, callback){
 
 		// make sure all of the chilren are up to date
 		node.update_children(function(){
-
+			
 			console.log();
 			for(var i = 0; i < node.children.length; i++){
 				console.log(node.children[i].name);
@@ -75,6 +71,17 @@ Tree.prototype.ls = function(path, callback){
 	}
 }
 
+Tree.prototype.ssh = function(options, callback){
+
+	if(current.type === 'Instance'){
+		current.ssh()
+	}else{
+		console.log('Cannot ssh on that type of resource.');
+	}
+
+	callback();
+}
+
 // paths are in the form /stack_name/logical_id/logical_id
 function get_node(path, callback){
 
@@ -84,8 +91,18 @@ function get_node(path, callback){
 		return null;
 	}else if(path[0] === '/'){
 		cur = root;
+
+		if(path.length === 1){
+			callback(cur);
+			return;
+		}
 	}else{
 		cur = current;
+	}
+
+	// take of trailing / chars
+	if(path.slice(-1) === "/"){
+		path = path.substring(0, path.length - 1);
 	}
 
 	var segments = path.split('/');
@@ -99,30 +116,41 @@ function get_node_recursive(cur, cur_seg, segments, callback){
 
 	if(cur_seg === segments.length){
 		callback(cur);
+		return;
 	}
 
 	if(segments[cur_seg] === '..'){
-		callback(cur.parent, cur_seg + 1, segments, callback);
+		get_node_recursive(cur.parent, cur_seg + 1, segments, callback);
 		return;
 	}else{
 
 		cur.update_children(function(){
 
+			var possible = [];
+			var segment_len = segments[cur_seg].length;
+
 			for(var j = 0; j < cur.children.length; j++){
 
 				if(cur.children[j].name === segments[cur_seg]){
 					cur = cur.children[j];
-					callback(cur, cur_seg + 1, segments, callback);
+					get_node_recursive(cur, cur_seg + 1, segments, callback);
 					return;
+				}else if(cur.children[j].name.substring(0, segment_len) === segments[cur_seg]){
+					possible.push(cur.children[j]);
 				}
 			}
 
-			console.log(
-				cur.name,
-				'does not have a child',
-				segments[cur_seg]);
+			if(possible.length === 1){
+				get_node_recursive(possible[0], cur_seg + 1, segments, callback);
+			}else{
+				console.log();
+				for(var i = 0; i < possible.length; i++){
+					console.log(possible[i].name);
+				}
+				console.log();
 
-			callback(null);
+				callback(null);
+			}
 		});
 	}
 }

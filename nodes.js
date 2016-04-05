@@ -1,6 +1,7 @@
 
 
 var AWS = require('aws-sdk');
+var exec = require('child_process').exec;
 var settings = require('./settings');
 
 var params = { region: settings.region };
@@ -10,18 +11,19 @@ var elb = new AWS.ELB(params);
 var asg = new AWS.AutoScaling(params);
 var iam = new AWS.IAM(params);
 
-function create_node(data, parent){
+function create_node(type, data, parent){
 
 	var node = null;
 
-	switch(settings.lookup[data.ResourceType]){
+	switch(type){
 		case "Asg": return new Asg(data, parent);
+		case "Instance": return new Instance(data, parent);
 		case "InstanceProfile": return new InstanceProfile(data, parent);
 		case "InternetGateway": return new InternetGateway(data, parent);
 		case "LaunchConfig": return new LaunchConfig(data, parent);
 		case "Elb": return new Elb(data, parent);
 		case "Alarm": return new Alarm(data, parent);
-		case "MonTopic": return new MonTopic(data, parent);
+		case "Topic": return new Topic(data, parent);
 		case "Role": return new Role(data, parent);
 		case "Route": return new Route(data, parent);
 		case "RouteTable": return new RouteTable(data, parent);
@@ -45,6 +47,8 @@ exports.Root = function(){
 	this.update_children = function(callback){
 
 		var self = this;
+
+		this.children = [];
 
 		cf.listStacks({
 			StackStatusFilter: settings.stack_filter
@@ -75,7 +79,10 @@ function Stack(data, parent){
 }
 
 Stack.prototype.update_children = function(callback){
+
 	var self = this;
+
+	this.children = [];
 
 	cf.listStackResources({
 			StackName: this.name,
@@ -87,8 +94,16 @@ Stack.prototype.update_children = function(callback){
 
 				resources.forEach(function(resource){
 
-					var node = create_node(resource, self);
-					self.children.push(node);
+					var type = settings.lookup[resource.ResourceType];
+					var node = create_node(type, resource, self);
+
+					if(!node){
+						console.log(
+							'Couldnt create object from resource:', resource,
+							'\n Yell at Shawn to fix that.');
+					}else{
+						self.children.push(node);
+					}
 				});
 
 				callback();
@@ -101,12 +116,89 @@ function Asg(data, parent){
 	this.type = 'Asg';
 	this.name = data.LogicalResourceId;
 
+	this.resource_id = data.PhysicalResourceId;
+
 	this.parent = parent;
 	this.children = [];
 }
 
 Asg.prototype.update_children = function(callback){
+
 	var self = this;
+
+	this.children = [];
+
+	asg.describeAutoScalingGroups({
+		AutoScalingGroupNames: [self.resource_id]
+	}, function(err, data) {
+		if (err){
+			console.log(err, err.stack);
+		}else{
+
+			var instances = data.AutoScalingGroups[0].Instances;
+			instances.forEach(function(instance){
+
+				var node = create_node('Instance', instance, self);
+
+				self.children.push(node);
+			});
+
+			callback();
+		}
+	});
+}
+
+function Instance(data, parent){
+
+	var self = this;
+
+	this.type = 'Instance';
+	this.name = data.InstanceId;
+	this.status = data.HealthStatus;
+	this.az = data.AvailabilityZone;
+	this.ip = null;
+
+	ec2.describeInstances({
+		InstanceIds: [this.name]
+	}, function(err, data) {
+		if (err) console.log(err, err.stack);
+		else{
+			var instance = data.Reservations[0].Instances[0];
+
+			if(instance.PublicIpAddress !== undefined){
+				self.ip = instance.PublicIpAddress;
+			}
+		}
+	});
+
+	this.parent = parent;
+	this.children = [];
+}
+
+Instance.prototype.update_children = function(callback){
+	var self = this;
+
+	this.children = [];
+
+	callback();
+}
+
+Instance.prototype.ssh = function(callback){
+
+	if(!this.name || !this.ip){
+		console.log('Couldnt get the ip address for this instance.');
+		return;
+	}
+
+	var command = "osascript -e 'tell application \"Terminal\"";
+	command += " to activate' -e 'tell application \"System Events\"";
+	command += " to tell process \"Terminal\" to keystroke \"t\" using";
+	command += " command down' -e 'tell application \"Terminal\" to do script ";
+	command += "\"echo " + this.name + " && ssh -o StrictHostKeyChecking=no -i ";
+	command += settings.key_path + " " + settings.ssh_user + "@" + this.ip + "\"";
+	command += " in selected tab of the front window'";
+
+	var ssh = exec(command, function(){});
 }
 
 function InstanceProfile(data, parent){
@@ -120,6 +212,10 @@ function InstanceProfile(data, parent){
 
 InstanceProfile.prototype.update_children = function(callback){
 	var self = this;
+
+	this.children = [];
+
+	callback();
 }
 
 function InternetGateway(data, parent){
@@ -133,6 +229,10 @@ function InternetGateway(data, parent){
 
 InternetGateway.prototype.update_children = function(callback){
 	var self = this;
+
+	this.children = [];
+
+	callback();
 }
 
 function LaunchConfig(data, parent){
@@ -146,6 +246,10 @@ function LaunchConfig(data, parent){
 
 LaunchConfig.prototype.update_children = function(callback){
 	var self = this;
+
+	this.children = [];
+
+	callback();
 }
 
 function Elb(data, parent){
@@ -159,6 +263,10 @@ function Elb(data, parent){
 
 Elb.prototype.update_children = function(callback){
 	var self = this;
+
+	this.children = [];
+
+	callback();
 }
 
 function Alarm(data, parent){
@@ -172,19 +280,27 @@ function Alarm(data, parent){
 
 Alarm.prototype.update_children = function(callback){
 	var self = this;
+
+	this.children = [];
+
+	callback();
 }
 
-function MonTopic(data, parent){
+function Topic(data, parent){
 
-	this.type = 'MonTopic';
+	this.type = 'Topic';
 	this.name = data.LogicalResourceId;
 
 	this.parent = parent;
 	this.children = [];
 }
 
-MonTopic.prototype.update_children = function(callback){
+Topic.prototype.update_children = function(callback){
 	var self = this;
+
+	this.children = [];
+
+	callback();
 }
 
 function Role(data, parent){
@@ -198,6 +314,10 @@ function Role(data, parent){
 
 Role.prototype.update_children = function(callback){
 	var self = this;
+
+	this.children = [];
+
+	callback();
 }
 
 function Route(data, parent){
@@ -211,6 +331,10 @@ function Route(data, parent){
 
 Route.prototype.update_children = function(callback){
 	var self = this;
+
+	this.children = [];
+
+	callback();
 }
 
 function RouteTable(data, parent){
@@ -224,6 +348,10 @@ function RouteTable(data, parent){
 
 RouteTable.prototype.update_children = function(callback){
 	var self = this;
+
+	this.children = [];
+
+	callback();
 }
 
 function SecurityGroup(data, parent){
@@ -237,6 +365,10 @@ function SecurityGroup(data, parent){
 
 SecurityGroup.prototype.update_children = function(callback){
 	var self = this;
+
+	this.children = [];
+
+	callback();
 }
 
 function Subnet(data, parent){
@@ -250,6 +382,10 @@ function Subnet(data, parent){
 
 Subnet.prototype.update_children = function(callback){
 	var self = this;
+
+	this.children = [];
+
+	callback();
 }
 
 function SubnetRouteTableAssoc(data, parent){
@@ -263,6 +399,10 @@ function SubnetRouteTableAssoc(data, parent){
 
 SubnetRouteTableAssoc.prototype.update_children = function(callback){
 	var self = this;
+
+	this.children = [];
+
+	callback();
 }
 
 function VPC(data, parent){
@@ -276,6 +416,10 @@ function VPC(data, parent){
 
 VPC.prototype.update_children = function(callback){
 	var self = this;
+
+	this.children = [];
+
+	callback();
 }
 
 function VPCGatewayAttach(data, parent){
@@ -289,6 +433,10 @@ function VPCGatewayAttach(data, parent){
 
 VPCGatewayAttach.prototype.update_children = function(callback){
 	var self = this;
+
+	this.children = [];
+
+	callback();
 }
 
 function RecordSetGroup(data, parent){
@@ -302,4 +450,8 @@ function RecordSetGroup(data, parent){
 
 RecordSetGroup.prototype.update_children = function(callback){
 	var self = this;
+
+	this.children = [];
+
+	callback();
 }
