@@ -14,6 +14,9 @@ Then the project should be installed. To run it use the following.
 ```
 $cfsh
 ```
+
+Some commands require ssh access to the instances. To run these commands add the path to your .pem file in lib/settings.js. There is a placeholder named 'PATH-TO-A-PEM-FILE'.
+
 You can exit the execution with 2 commands.
 ```
 exit
