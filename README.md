@@ -7,7 +7,7 @@ Cfsh is a NodeJs project that uses npm for package management. So to install, do
 ```
 $git clone https://github.com/svolpe43/rtools
 $cd rtools
-$npm install -g cfsh
+$npm install
 $npm link
 ```
 Then the project should be installed. To run it use the following.

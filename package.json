@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.2.25",
+    "keypress": "^0.2.1",
     "node-sshclient": "^0.2.0",
     "winston": "^2.2.0"
   },
