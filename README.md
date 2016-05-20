@@ -17,7 +17,10 @@ Then the project should be installed. To run it use the following.
 $cfsh
 ```
 
-Some commands require ssh access to the instances. To run these commands add the path to your .pem file in lib/settings.js. There is a placeholder named 'PATH-TO-A-PEM-FILE'.
+Some commands require ssh access to the instances. To run these commands you have to set the RT_KEY_PATH to the path to your key.
+```
+$export RT_KEY_PATH=/Users/shawn.volpe/.ssh/some-key.pem
+```
 
 Some help commands:
 ```
