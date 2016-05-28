@@ -90,3 +90,10 @@ The info command is currently only supported on nodes of type 'Instance'. It lis
 
 ### cat \<path\>
 The cat command can only be used on a node of type 'Instance'. This command cats the path specified by '\<path\>' on the instance of the current selected node.
+
+### cud 
+The cud command will use ssh to output the /var/log/cloud-init-output.log file from the ec2 instance.
+
+### stats
+The stats command will use ssh to run the top command on the ec2 instance. This will output some basic statistics about the
+cpu and memory of the instance.
