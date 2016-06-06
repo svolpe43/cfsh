@@ -17,10 +17,12 @@ Then the project should be installed. To run it use the following.
 $cfsh
 ```
 
-Some commands require ssh access to the instances. To run these commands you have to set the RT_KEY_PATH to the path to your key.
+Specify a region with -r and a AWS profile with -p.
 ```
-$export RT_KEY_PATH=/Users/shawn.volpe/.ssh/some-key.pem
+$cfsh -r us-west-1 -p prod-account
 ```
+
+Some commands require ssh access to the instances. Make sure your ssh key is added to your key ring prior to running cfsh.
 
 Some help commands:
 ```
