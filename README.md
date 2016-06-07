@@ -99,3 +99,26 @@ The cud command will use ssh to output the /var/log/cloud-init-output.log file f
 ### stats
 The stats command will use ssh to run the top command on the ec2 instance. This will output some basic statistics about the
 cpu and memory of the instance.
+
+### History <num>
+The history command will output your current session's command history. If the num option is specified, it will show the last num commands.
+
+ls
+cd volpe-5-2j1j4ow5
+params
+outputs
+ls
+cd A
+ls
+cd i
+info
+stats
+cat some/file
+ssh
+history 12
+
+mk solr_cloud MySolrCloud
+ls
+up other_solr_cloud
+ls
+rm some_other_solr_cloud
