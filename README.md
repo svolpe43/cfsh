@@ -1,5 +1,7 @@
 # CloudFormation Shell
 
+[Foo](#foo)
+
 Cfsh is a new type of shell that traverses aws resources in an AWS account. Imagine bash but instead of each node being a file or directory, each node is an AWS resource (i.e cf stack, ec2 instance, VPC, ect.). If you are comfortable inside the Unix shell then you should feel right at home when inside cfsh.
 
 Just like bash, use the up and down arrow keys to traverse the history of commands. The history is only for a given session.
@@ -122,3 +124,5 @@ ls
 up other_solr_cloud
 ls
 rm some_other_solr_cloud
+
+# Foo
