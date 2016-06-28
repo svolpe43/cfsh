@@ -70,7 +70,7 @@ aliases : {
 [health](#health)  
 [cud](#cud)  
 
-#### Help Plugin
+## Help Plugin
 
 #### help
 Equivalent of cmds command and apps command.
@@ -81,7 +81,7 @@ List all available commands
 #### apps
 List apps currently available. If you drop a cf template with a '.json' file type into 'cf/', it will show up with this command.
 
-#### Nagivation Plugin
+## Nagivation Plugin
 
 #### ls [path] [option]
 Path is an optional parameter to ls on a certain node. If path is not specified it will list the children of the current node. The path is bash syntax with things like '..' supported.
@@ -97,7 +97,7 @@ The type command outputs the node type of the current selected node. Some comman
 #### history \<num\>
 The history command will output your current session's command history. If the num option is specified, it will show the last num commands.
 
-#### Operations Plugin
+## Operations Plugin
 
 #### mk \<type\> \<stack_name\>
 The only AWS resource you can `mk` is a cf stack. The `mk` command will create a stack of type \<type\> with the name \<stack_name\>.
@@ -110,7 +110,7 @@ rm deletes the stack specified by \<stack_name\>
 #### up \<type\> \<stack_name\>
 `up` updates the stack specified by \<stack_name\> with the cf template that shares the same name as the one it used to create it.
 
-#### Stack Plugin
+## Stack Plugin
 
 #### events
 The events command will output all events for the current stack.
@@ -124,7 +124,7 @@ The tags command will output all tags for the current stack. (Individual resourc
 #### outputs
 The outputs command will output all the outputs for the current stack.
 
-#### EC2 Plugin
+## EC2 Plugin
 
 #### info
 The info command is currently only supported on nodes of type 'Instance'. It lists all AWS data of the current ec2 node.
