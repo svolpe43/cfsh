@@ -66,6 +66,7 @@ aliases : {
 [cat](#cat)  
 [ssh](#ssh)  
 [sshall](#sshall)  
+[sshrand](#sshrand)  
 [vols](#vols)  
 [health](#health)  
 [cud](#cud)  
@@ -140,7 +141,10 @@ The cat command can only be used on a node of type 'Instance'. This command cats
 The ssh command simply opens a new terminal tab that will be sshed into the instance using the ssh user specified in settings.js. In order to use this command your current selected node needs to be of type 'Instance'. The ssh command also optionally takes in a path parameter to a given instance node.
 
 #### sshall
-The sshall command will open up a ssh session in a new tab for every instance in the current selected stack. The tabs get opened in the order that the stack resources are listed using the ls command, recursively. Inside the new terminal tabs, the Logical Id or Resource Name is echoed at the top so you can track what resource it belongs to.
+The sshall command will open up a ssh session in a new tab for every instance in the current selected auto scaling group. The tabs get opened in the order that the stack resources are listed using the ls command. Inside the new terminal tabs, the Logical Id or Resource Name is echoed at the top so you can track what resource it belongs to.
+
+#### sshrand
+The sshrand command will randomly choose an instance in the current selected autoscaling group and open up a ssh session to that instance in a new tab.
 
 #### vols
 The vols command outputs the volumes that are attached to the instances in an Auto Scaling Group along with the LifecycleState and HealthStaus of the instance that its attached to. This command currently only looks for devices named '/dev/sdd'. This command can only be used on nodes of type 'Asg'. If this command gains interest then I can add paramaterized device names.
