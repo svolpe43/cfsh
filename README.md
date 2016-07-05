@@ -67,6 +67,7 @@ aliases : {
 [ssh](#ssh)  
 [sshall](#sshall)  
 [sshrand](#sshrand)  
+[sshfw](#sshfw)  
 [vols](#vols)  
 [health](#health)  
 [cud](#cud)  
@@ -145,6 +146,25 @@ The sshall command will open up a ssh session in a new tab for every instance in
 
 #### sshrand
 The sshrand command will randomly choose an instance in the current selected autoscaling group and open up a ssh session to that instance in a new tab.
+
+#### sshfw [optional forwarding port '-8080'] [path]:\<destination port\>
+The sshfw command forwards http requests through an ssh tunnel to a remote machine, allowing you bypass firewalls. The forwarding port and the path are optional and the destination port is mandatory. If path is not specified it assumes you mean the current node which must be of type Instance. If you don't specify a forwarding port it will randomly pick one between 1024 and 49151 which are linux user ports. The command will then output the url that you can then use in your browser to access the server. Some sample commands:
+
+```
+// only destination port
+// forward localhost[rand port] to [current node's remote host]:8983
+#:sshfw 8983
+
+// path and destination port
+//use random forwarding port
+#:sshfw i-065:8983
+
+// forwarding port, path and destination port
+// forward localhost:9090 to [remote host at path]:8983
+#:sshfw -9090 i-065:8983
+
+
+```
 
 #### vols
 The vols command outputs the volumes that are attached to the instances in an Auto Scaling Group along with the LifecycleState and HealthStaus of the instance that its attached to. This command currently only looks for devices named '/dev/sdd'. This command can only be used on nodes of type 'Asg'. If this command gains interest then I can add paramaterized device names.
