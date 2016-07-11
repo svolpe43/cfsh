@@ -15,7 +15,7 @@ Then to run the project use the following:
 $cfsh
 ```
 
-Specify an AWS region with -r and an AWS profile with -p.
+Cfsh uses AWS profiles for authentication to your AWS account. It will read the profile name from the AWS_PROFILE enviorment variable. Or you can optionally specify an AWS profile with -p. Cfsh defaults to the us-east-1 region but you can specify a AWS region with -r.
 ```
 $cfsh -r us-west-1 -p prod-account
 ```
@@ -78,7 +78,7 @@ aliases : {
 List all available commands.
 
 #### apps
-List apps currently available. If you drop a cf template with a '.json' file type into 'cf/', it will show up with this command.
+List apps currently available. If you drop a CloudFormation template with a '.json' file type into 'cf/', it will show up with this command.
 
 #### help
 The `help` command is equivalent to running the `cmds` command and then the `apps` command.
@@ -104,13 +104,13 @@ The `history` command will output your current session's command history. If the
 #### mk \<type\> \<stack_name\>
 The `mk` command will create a stack of type \<type\> with the name \<stack_name\>. This command can only be used to make cf stacks.
 
-`mk` can make a stack of any type as long as a cf template exists for that type. To create your own stack type, simply drop a cf template into the the `cf` directory with the file name following this convention: `<type>.json`. This ensures that the `mk` command can find your cf template. For example, condsider that you were to put a cf template in the cf directory named logging.json. By running `mk logging my-logging-stack`, Cfsh will create a stack using the logging.json template and the stack name will be my-logging-stack. Once the stack is complete you can `cd` into that stack and `ls` to see its resources.
+`mk` can make a stack of any type as long as a CloudFormation template exists for that type. To create your own stack type, simply drop a CF template into the the `cf` directory with the file name following this convention: `<type>.json`. This ensures that the `mk` command can find your CF template. For example, condsider that you were to put a CF template in the cf directory named logging.json. By running `mk logging my-logging-stack`, Cfsh will create a stack using the logging.json template and the stack name will be my-logging-stack. Once the stack is complete you can `cd` into that stack and `ls` to see its resources.
 
 #### rm \<stack_name\>
 The `rm` commnand deletes the stack specified by \<stack_name\>.
 
 #### up \<type\> \<stack_name\>
-The `up` command updates the stack specified by \<stack_name\> with the cf template that shares the same name as the one it used to create it.
+The `up` command updates the stack specified by \<stack_name\> with the CloudFormation template that shares the same name as the one it used to create it.
 
 ## Stack Plugin
 
