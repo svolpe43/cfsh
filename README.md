@@ -40,6 +40,20 @@ aliases : {
 }
 ```
 
+## Examples
+
+Create and delete stacks just like you would a directory in Bash. ([mk](#mk), [rm](#rm))<br><br>
+<img src="./doc/stack_ops.gif" height="350" width="500"><br><br>
+
+Gather information about the stacks like parameters, outputs and events. ([params](#params), [outputs](#outputs))<br><br>
+<img src="./doc/stack_stuff.gif" height="305" width="520"><br><br>
+
+Traverse the stack resources and get AWS information and metrics. ([stats](#stats), [info](#info))<br><br>
+<img src="./doc/resource_stuff.gif" height="305" width="520"><br><br>
+
+Use the arrows to scroll through past commands or use `history` to see them. `ssh` into an instance without parameters! ([history](#history), [ssh](#ssh))<br><br>
+<img src="./doc/misc_res_stuff.gif" height="305" width="520"><br><br>
+
 ## Commands
 
 ##### Help Plugin
