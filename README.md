@@ -85,6 +85,8 @@ Use the arrows to scroll through past commands or use `history` to see them. `ss
 [vols](#vols)  
 [health](#health)  
 [cud](#cud)  
+##### Elb Plugin
+[dereg](#dereg)  
 
 ## Help Plugin
 
@@ -262,3 +264,11 @@ The `health` command allows you to set the health of an instance in an Auto Scal
 #:cud
 ```
 The `cud` command uses ssh to output the `/var/log/cloud-init-output.log` file from the ec2 instance.
+
+## Elb Plugin
+
+### dereg
+```
+#:dereg <instance node>
+```
+Deregister an instance from an Elastic Load Blancer. Only works on nodes of type 'Elb'.
