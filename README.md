@@ -82,11 +82,13 @@ Use the arrows to scroll through past commands or use `history` to see them. `ss
 [sshall](#sshall)  
 [sshrand](#sshrand)  
 [sshfw](#sshfw)  
+[sync](#sync)
 [vols](#vols)  
 [health](#health)  
 [cud](#cud)  
 ##### Elb Plugin
 [dereg](#dereg)  
+[reg](#reg)
 
 ## Help Plugin
 
@@ -247,6 +249,12 @@ localhost:9090 -> 54.23.56.1:8983
 
 ```
 
+### sync
+```
+#:sync /source/path /remote/dest/path
+```
+The `sync` command Uses 'rsync' to push a local file or directory to a remote path. It runs with the options '-azv'. This command only works on node of type 'Instance'.
+
 ### vols
 ```
 #:vols
@@ -272,3 +280,9 @@ The `cud` command uses ssh to output the `/var/log/cloud-init-output.log` file f
 #:dereg <instance node>
 ```
 Deregister an instance from an Elastic Load Blancer. Only works on nodes of type 'Elb'.
+
+### reg
+```
+#:reg <full instance id>
+```
+Register an instance to an Elastic Load Blancer. Only works on nodes of type 'Elb'.
