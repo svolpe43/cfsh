@@ -82,7 +82,8 @@ Use the arrows to scroll through past commands or use `history` to see them. `ss
 [sshall](#sshall)  
 [sshrand](#sshrand)  
 [sshfw](#sshfw)  
-[sync](#sync)
+[sync](#sync)  
+[syncall](#syncall)  
 [vols](#vols)  
 [health](#health)  
 [cud](#cud)  
@@ -253,7 +254,13 @@ localhost:9090 -> 54.23.56.1:8983
 ```
 #:sync /source/path /remote/dest/path
 ```
-The `sync` command Uses 'rsync' to push a local file or directory to a remote path. It runs with the options '-azv'. This command only works on node of type 'Instance'.
+The `sync` command uses 'rsync' to push a local file or directory to a remote path. It runs with the options '-azv'. This command only works on node of type 'Instance'.
+
+### syncall
+```
+#:syncall /source/path /remote/dest/path
+```
+This command only works on node of type 'Asg'. The `syncall` command uses 'rsync' to push a local file or directory to a remote path on every instance in an Auto Scaling Group. It runs with the options '-azv'.
 
 ### vols
 ```
