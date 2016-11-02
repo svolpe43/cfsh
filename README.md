@@ -83,7 +83,7 @@ Use the arrows to scroll through past commands or use `history` to see them. `ss
 [sshrand](#sshrand)  
 [sshfw](#sshfw)  
 [sync](#sync)  
-[syncall](#syncall)  
+[exec](#exec)   
 [vols](#vols)  
 [health](#health)  
 [cud](#cud)  
@@ -254,13 +254,13 @@ localhost:9090 -> 54.23.56.1:8983
 ```
 #:sync /source/path /remote/dest/path
 ```
-The `sync` command uses 'rsync' to push a local file or directory to a remote path. It runs with the options '-azv'. This command only works on node of type 'Instance'.
+The `sync` command uses 'rsync' to push a local file or directory to a remote path. It runs with the options '-azv'. This command works on nodes of type 'Asg' or 'Instance'. If this command is run on a node of type 'Asg' it will sync to every Instance in the Asg. This command runs as root on the target instance.
 
-### syncall
+### exec
 ```
-#:syncall /source/path /remote/dest/path
+#:exec "echo 'Hello'"
 ```
-This command only works on node of type 'Asg'. The `syncall` command uses 'rsync' to push a local file or directory to a remote path on every instance in an Auto Scaling Group. It runs with the options '-azv'.
+The `exec` command will run the specified command on the target node. This command only works on nodes of type 'Asg' and 'Instance'. If run on a node of type 'Asg' it will execute the command on each instance in the Asg.
 
 ### vols
 ```
