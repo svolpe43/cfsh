@@ -87,6 +87,8 @@ Use the arrows to scroll through past commands or use `history` to see them. `ss
 [vols](#vols)  
 [health](#health)  
 [cud](#cud)  
+[mirror](#mirror)  
+[mirror-stop](#mirror-stop)  
 ##### Elb Plugin
 [dereg](#dereg)  
 [reg](#reg)
@@ -261,6 +263,26 @@ The `sync` command uses 'rsync' to push a local file or directory to a remote pa
 #:exec "echo 'Hello'"
 ```
 The `exec` command will run the specified command on the target node. This command only works on nodes of type 'Asg' and 'Instance'. If run on a node of type 'Asg' it will execute the command on each instance in the Asg.
+
+### mirror
+```
+#:mirror <source> <destination>
+```
+The `mirror` command will open up a watcher process to respond to 'change' events on the local source directory. When a change is detected it will rsync the file to the path specified by 'destination' on the current node. This command works on nodes of type 'Asg' and 'Instance'. If it is run on a node of type 'Asg' it will mirror the file to each instance in the Asg.
+
+'mirror' can be used to mirror directories as well. When doing so do not include the synced directory in the destination path or else you will get 1 extra uneeded depth. For example, in order to mirror a directory /tmp/test-dir to /tmp on the remote instance you can use:
+```
+#:mirror /tmp/test-dir /tmp/
+```
+This will end up on the remote instance as /tmp/test-dir/test-dirs-contents instead of /tmp/test-dir/test-dir/test-dirs-contents.
+
+While a watcher process is running you can use the Cfsh terminal like normal by hitting 'enter' to get back to the terminal. Use the 'mirror-stop' command to close the watcher process. Only one watcher process can run at one time.
+
+### mirror-stop
+```
+#:mirror-stop
+```
+The `mirror-stop` command can be run on nodes of any type. This will cancel the mirroring process started with 'mirror'.
 
 ### vols
 ```
