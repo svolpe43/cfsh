@@ -202,7 +202,7 @@ The `info` command lists all AWS data of the current ec2 node. It is currently o
 #:stats
 ```
 The `stats` command will use ssh to run the `top` command on the ec2 instance. This will output some basic statistics about the
-cpu and memory of the instance.
+cpu and memory of the instance. This command can be run on an instance node or an Asg node.
 
 ### cat
 ```
