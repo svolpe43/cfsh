@@ -12,6 +12,7 @@
     "copy-paste": "^1.2.0",
     "keypress": "^0.2.1",
     "node-sshclient": "^0.2.0",
+    "opn": "^4.0.2",
     "optimist": "^0.6.1"
   },
   "repository": {

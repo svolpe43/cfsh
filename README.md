@@ -232,7 +232,7 @@ The `sshrand` command will randomly choose an instance in the current selected a
 ```
 #:sshfw [optional forwarding port: '-8080'] [path]:<destination port>
 ```
-The `sshfw` command forwards http requests through an ssh tunnel to a remote machine, allowing you bypass firewalls. The forwarding port and the path are optional while the destination port is mandatory. If path is not specified `sshfw` assumes you mean the current node which must be of type 'Instance'. If you don't specify a forwarding port it will randomly pick a Linux user port (1024 - 49151). The command will then output a url to use in your browser to access the server. The following are some sample commands:
+The `sshfw` command forwards http requests through an ssh tunnel to a remote machine, allowing you bypass firewalls. The forwarding port and the path are optional while the destination port is mandatory. If path is not specified `sshfw` assumes you mean the current node which must be of type 'Instance'. If you don't specify a forwarding port it will randomly pick a Linux user port (1024 - 49151). The command will then output a url to use in your browser to access the server and open up a tab in your default browser to that local port. The following are some sample commands:
 
 ```
 // Specify the destination port
