@@ -6,6 +6,7 @@ Cfsh is a shell that traverses aws resources in Cloudformation. If you are comfo
 Cfsh is a Node.js project, you can get it [here](https://nodejs.org/en/download/). It relies on Node.js's package manager, npm. Once you have Node.js and npm, install Cfsh with the following:
 ```
 $npm install -g cfsh
+$npm link
 ```
 Or install from source with:
 ```
