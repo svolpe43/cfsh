@@ -1,5 +1,5 @@
 {
-  "name": "cloud-shell",
+  "name": "cfsh",
   "version": "1.0.0",
   "description": "Explore your cloud formation stack.",
   "preferGlobal": "true",
@@ -13,10 +13,11 @@
     "keypress": "^0.2.1",
     "node-sshclient": "^0.2.0",
     "opn": "^4.0.2",
-    "optimist": "^0.6.1"
+    "optimist": "^0.6.1",
+    "request": "^2.81.0"
   },
   "repository": {
     "type": "git",
-    "url": "svolpe/rtools"
+    "url": "svolpe43/cfsh"
   }
 }
