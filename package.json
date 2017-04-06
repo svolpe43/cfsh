@@ -1,6 +1,6 @@
 {
   "name": "cfsh",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Explore your cloud formation stack.",
   "preferGlobal": "true",
   "license": "See license in LICENSE",
