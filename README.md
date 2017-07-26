@@ -160,7 +160,12 @@ The `mk` command will create a stack of type \<type\> with the name \<stack_name
 ```
 #:rm <stack_name>
 ```
-The `rm` commnand deletes the stack specified by \<stack_name\>.
+**Note:** The 'rm' command requires the -r option to delete any stack otherwise it defaults to dry run.
+
+The `rm` commnand deletes the stack specified by \<stack_name\>. You can also pass in a range such as the following to delete multiple stacks at once.
+```
+#:rm 4-6
+```
 
 ### up
 ```
