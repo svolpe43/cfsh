@@ -72,6 +72,10 @@ module.exports = {
 		'UPDATE_ROLLBACK_FAILED',
 		'UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS',
 		'UPDATE_ROLLBACK_COMPLETE'
-	]
+	],
+
+	osa_ssh_command: 'osascript -e \'tell application "Terminal" to activate\' -e \'tell application "System Events" to tell process "Terminal" to keystroke "t" using command down\' -e \'tell application "Terminal" to do script "{{{command}}}" in selected tab of the front window\'',
+
+	proxy_alias: 'bastion'
 
 }
