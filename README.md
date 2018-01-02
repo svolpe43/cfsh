@@ -1,4 +1,4 @@
-# AWS Shell
+# Cfsh the AWS Shell
 
 Cfsh is a shell that traverses aws resources and allows you to manipulate and control them. If you are comfortable inside the Unix shell then you should feel at home. The behavior and commands mimic Bash as closely as possible. It has the basic navigation commands such as 'ls' and 'cd', you can use the up and down arrow keys to traverse the history of commands and many more.
 
