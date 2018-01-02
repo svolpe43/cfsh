@@ -25,6 +25,11 @@ Cfsh uses the same authentication as the [AWS cli tool](http://docs.aws.amazon.c
 $cfsh -r us-west-1 -p prod-account
 ```
 
+Cfsh has two modes that change where the root node is set. In the 'cf' all root nodes are CloudFormation stacks and in 'ec2' mode all root nodes are EC2 instances. You can set this option with the -m option. CloudFormation is the default mode if the option is not passed in.
+```
+$cfsh -m ec2
+```
+
 Some commands require ssh access to the instances so make sure your ssh key is added to your key ring prior to running Cfsh.
 
 Help commands:
