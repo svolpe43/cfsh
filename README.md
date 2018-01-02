@@ -20,6 +20,9 @@ Then to run the project use the following:
 $cfsh
 ```
 
+Some commands require ssh access to the instances so make sure your ssh key is added to your key ring prior to running Cfsh.
+
+## Options
 Cfsh uses the same authentication as the [AWS cli tool](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html), so if you can use the AWS cli tool you can use Cfsh. If you use AWS's new standard, the AWS credentials file, you can optionally specify an AWS profile with the -p option. Also, Cfsh defaults to the us-east-1 region but you can specify a AWS region with the -r option.
 ```
 $cfsh -r us-west-1 -p prod-account
@@ -30,9 +33,14 @@ Cfsh has two modes that change where the root node is set. In the 'cf' all root 
 $cfsh -m ec2
 ```
 
-Some commands require ssh access to the instances so make sure your ssh key is added to your key ring prior to running Cfsh.
+Some commands have options or arguments. To save commonly used ones add aliases to the settings file:
+```
+aliases : {
+	'ls' : 'ls -l'
+}
+```
 
-Help commands:
+## Introduction
 ```
 #:cmds
 #:help
@@ -41,13 +49,6 @@ Help commands:
 Exit with:
 ```
 #:exit
-```
-
-Some commands have options or arguments. To save commonly used ones add aliases to the settings file:
-```
-aliases : {
-	'ls' : 'ls -l'
-}
 ```
 
 ## Examples
