@@ -76,6 +76,8 @@ module.exports = {
 
 	osa_ssh_command: 'osascript -e \'tell application "Terminal" to activate\' -e \'tell application "System Events" to tell process "Terminal" to keystroke "t" using command down\' -e \'tell application "Terminal" to do script "{{{command}}}" in selected tab of the front window\'',
 
+	linux_ssh_command: 'xdotool key ctrl+shift+t sleep 2 type \'{{{command}}}\n\'',
+
 	proxy_alias: 'bastion'
 
 }
