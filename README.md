@@ -22,6 +22,8 @@ $cfsh
 
 Some commands require ssh access to the instances so make sure your ssh key is added to your key ring prior to running Cfsh.
 
+NOTE: For Linux users, install [xdotools](http://manpages.ubuntu.com/manpages/artful/man1/xdotool.1.html) to enjoy all the commands of CFSH on Linux.(Tested on Ubuntu 16.04)
+
 ## Options
 Cfsh uses the same authentication as the [AWS cli tool](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html), so if you can use the AWS cli tool you can use Cfsh. If you use AWS's new standard, the AWS credentials file, you can optionally specify an AWS profile with the -p option. Also, Cfsh defaults to the us-east-1 region but you can specify a AWS region with the -r option.
 ```
