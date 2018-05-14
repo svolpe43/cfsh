@@ -276,9 +276,13 @@ The `sync` command uses 'rsync' to push a local file or directory to a remote pa
 
 ### exec
 ```
+#:exec <cmd> [<node list>]
+
+// Examples
 #:exec "echo 'Hello'"
+#:exec "echo 'Hello'" ASG1,i-09fyy3g414d2d35,/1/1/2
 ```
-The `exec` command will run the specified command on the target node. This command only works on nodes of type 'Asg' and 'Instance'. If run on a node of type 'Asg' it will execute the command on each instance in the Asg.
+The `exec` command will run the specified command on the target node(s). Optionally you can pass in a path to a node or a list of paths to nodes to run the command on multiple instances or across multiple auto scaling groups. This command only works on nodes of type 'Asg' and 'Instance'. If run on a node of type 'Asg' it will execute the command on each instance in the Asg.
 
 ### mirror
 ```
